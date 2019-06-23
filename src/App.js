@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { CardList } from './CardList';
 import { robots } from './robots';
 import { SearchBox } from './SearchBox';
+import './App.css';
 
 class App extends Component {
   state = {
@@ -22,7 +23,7 @@ class App extends Component {
   render() {
     return (
       <div className="tc">
-        <h1>RoboFriends</h1>
+        <h1 className="f1">RoboFriends</h1>
         <SearchBox searchField={this.state.searchField} searchChanged={this.onSearchChanged} />
         <CardList robots={this.state.robots} />
       </div>
