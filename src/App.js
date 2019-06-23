@@ -6,9 +6,17 @@ import './App.css';
 
 class App extends Component {
   state = {
-    robots: robots,
+    robots: [],
     searchField: ''
   };
+
+  componentDidMount() {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => response.json())
+      .then(robots => {
+        this.setState({ robots: robots });
+      });
+  }
 
   onSearchChanged = event => {
     const filteredRobots = robots.filter(x => {
