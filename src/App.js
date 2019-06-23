@@ -4,6 +4,7 @@ import { robots } from './robots';
 import { SearchBox } from './components/SearchBox';
 import './App.css';
 import { Scroll } from './components/Scroll';
+import ErrorBoundry from './components/ErrorBoundry';
 
 class App extends Component {
   state = {
@@ -35,7 +36,9 @@ class App extends Component {
         <h1 className="f1">RoboFriends</h1>
         <SearchBox searchField={this.state.searchField} searchChanged={this.onSearchChanged} />
         <Scroll>
-          <CardList robots={this.state.robots} />
+          <ErrorBoundry>
+            <CardList robots={this.state.robots} />
+          </ErrorBoundry>
         </Scroll>
       </div>
     );
