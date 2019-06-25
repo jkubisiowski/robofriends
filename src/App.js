@@ -1,10 +1,23 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { CardList } from './components/CardList';
-import { robots } from './robots';
 import { SearchBox } from './components/SearchBox';
 import './App.css';
 import { Scroll } from './components/Scroll';
 import ErrorBoundry from './components/ErrorBoundry';
+import { setSearchField } from './actions';
+
+const mapStateToProps = state => {
+  return {
+    searchField: state.searchField
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSearchChanged: event => dispatch(setSearchField(event.target.value))
+  };
+};
 
 class App extends Component {
   state = {
@@ -20,24 +33,19 @@ class App extends Component {
       });
   }
 
-  onSearchChanged = event => {
-    const filteredRobots = robots.filter(x => {
-      return x.name.toLowerCase().includes(this.state.searchField.toLowerCase());
-    });
-    this.setState({
-      robots: filteredRobots,
-      searchField: event.target.value
-    });
-  };
-
   render() {
+    const { robots } = this.state;
+    const { searchField, onSearchChanged } = this.props;
+    const filteredRobots = robots.filter(x => {
+      return x.name.toLowerCase().includes(searchField.toLowerCase());
+    });
     return (
       <div className="tc">
         <h1 className="f1">RoboFriends</h1>
-        <SearchBox searchField={this.state.searchField} searchChanged={this.onSearchChanged} />
+        <SearchBox searchChanged={onSearchChanged} />
         <Scroll>
           <ErrorBoundry>
-            <CardList robots={this.state.robots} />
+            <CardList robots={filteredRobots} />
           </ErrorBoundry>
         </Scroll>
       </div>
@@ -45,4 +53,7 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
